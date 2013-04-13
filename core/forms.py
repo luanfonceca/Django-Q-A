@@ -15,3 +15,10 @@ class AnswerForm(ModelForm):
         model = Answer
         exclude = ['is_correct', 'aproves',
                    'desaproves', 'question']
+
+    def save(self, question=None, commit=True):
+        answer = super(AnswerForm, self).save(commit=False)
+        if question:
+            answer.question = question
+        return answer.save()
+

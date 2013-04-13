@@ -6,6 +6,9 @@ from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 
 class Question(Model):
+    author = CharField(max_length=80, null=False,
+        verbose_name=u'Autor'
+    )
     title = CharField(max_length=80, null=False,
         verbose_name=u'Titulo'
     )
@@ -39,11 +42,20 @@ class Question(Model):
             'slug': self.slug,
         }
 
+    @permalink
+    def get_answer_add_url(self):
+        return 'answer_add', (), {
+            'slug': self.slug,
+        }
+
     def increment_view(self):
         self.views += 1
         self.save()
 
 class Answer(Model):
+    author = CharField(max_length=80, null=False,
+        verbose_name=u'Autor'
+    )
     body = TextField(null=False, verbose_name=u'Resposta')
     is_correct = BooleanField(null=False, default=False)
     create_at = DateTimeField(null=False, auto_now_add=True)
@@ -61,7 +73,49 @@ class Answer(Model):
     def __unicode__(self):
         return "%s" % (self.body)
 
+    @permalink
+    def get_edit_url(self):
+        return 'answer_edit', (), {
+            'slug': self.question.slug,
+            'answer_pk': self.pk,
+        }
 
+    @permalink
+    def get_set_as_correct_url(self):
+        return 'answer_set_as_correct', (), {
+            'slug': self.question.slug,
+            'answer_pk': self.pk,
+        }
+
+    @permalink
+    def get_aprove_url(self):
+        return 'answer_aprove', (), {
+            'slug': self.question.slug,
+            'answer_pk': self.pk
+        }
+
+    @permalink
+    def get_desaprove_url(self):
+        return 'answer_desaprove', (), {
+            'slug': self.question.slug,
+            'answer_pk': self.pk
+        }
+
+    def set_as_correct(self):
+        self.is_correct = True
+        self.aproves += 100
+        self.save()
+
+    def increment_aproves(self):
+        self.aproves += 1
+        self.save()
+
+    def increment_desaproves(self):
+        self.desaproves += 1
+        self.save()
+
+
+# Signals
 @receiver(signals.pre_save, sender=Question)
 def generate_slug(sender, instance, signal=None, **kwargs):
     instance.slug = slugify(instance.title)
