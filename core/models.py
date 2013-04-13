@@ -72,9 +72,12 @@ class Answer(Model):
 
     class Meta:
         db_table = u'answer'
+        ordering = ['-aproves', 'desaproves', 'pk']
 
     def __unicode__(self):
-        return "%s" % (self.body)
+        return u"#%s, %s: %s" % (
+            self.pk, self.author, self.body
+        )
 
     @permalink
     def get_edit_url(self):

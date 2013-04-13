@@ -56,8 +56,7 @@ def set_as_correct(request, slug, answer_pk):
 def aprove(request, slug, answer_pk):
     question = Question.objects.get(slug=slug)
     answer = Answer.objects.get(pk=answer_pk)
-    if request.method == 'POST':
-        answer.increment_aproves()
+    answer.increment_aproves()
     return redirect('question', question.slug)
 
 
@@ -66,6 +65,5 @@ def aprove(request, slug, answer_pk):
 def desaprove(request, slug, answer_pk):
     question = Question.objects.get(slug=slug)
     answer = Answer.objects.get(pk=answer_pk)
-    if request.method == 'POST':
-        answer.increment_desaproves()
+    answer.increment_desaproves()
     return redirect('question', question.slug)

@@ -13,7 +13,7 @@ from core.forms import *
 def list(request):
     data = {
         'questions': Question.objects.all(),
-        'answer_form': AnswerForm()
+        'question_form': QuestionForm()
     }
     return render_to_response('question/list.html', data,
         context_instance=RequestContext(request))
@@ -75,6 +75,7 @@ def view(request, slug):
 
     data = {
         'question': question,
+        'answer_form': AnswerForm()
     }
     return render_to_response('question/view.html', data,
         context_instance=RequestContext(request))
