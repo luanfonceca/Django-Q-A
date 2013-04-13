@@ -17,12 +17,15 @@ class Question(Model):
         verbose_name=u'Descrição'
     )
     views = IntegerField(default=0)
+    create_at = DateTimeField(null=False, auto_now_add=True)
 
     class Meta:
         db_table = u'question'
 
     def __unicode__(self):
-        return u"%s" % (self.title)
+        return u"#%s, %s: %s" % (
+            self.pk, self.author, self.title
+        )
 
     @permalink
     def get_absolute_url(self):

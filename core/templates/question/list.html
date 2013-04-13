@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load bootstrap_toolkit %}
+
+{% block content %}
+    <div class="span12">
+        {% for question in questions %}
+            <h1>
+                <a href="{{ question.get_absolute_url }}">
+                    {{ question }}
+                </a>
+            </h1>
+            <div>
+                <div class="well">
+                    {{ question.description }}
+                </div>
+
+                <a href="#id_answer_form_{{ question.slug }}"
+                   role="button" data-toggle="modal"
+                   class="btn btn-large btn-success btn-block" >
+                    Responder
+                </a>
+            </div>
+            <div>
+                <span class="badge">
+                    Posted at: {{ question.create_at }}
+                </span>
+                <span class="badge badge-success">
+                    {{ question.answers.count }} Answers
+                </span>
+            </div>
+
+            <!-- Modal -->
+            <div id="id_answer_form_{{ question.slug }}"
+                 class="modal hide fade" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">
+                        Resposta: {{ question.title }}
+                    </h3>
+                </div>
+                <form action="{{ question.get_answer_add_url }}"
+                      method="POST" class="form-horizontal">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        {{ answer_form|as_bootstrap }}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal"
+                                aria-hidden="true">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <hr>
+        {% empty %}
+            <h1>No Questions</h1>
+        {% endfor %}
+    </div>
+{% endblock %}

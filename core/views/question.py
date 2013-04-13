@@ -12,7 +12,8 @@ from core.forms import *
 @url(r'^/?$', name="questions")
 def list(request):
     data = {
-        'questions': Question.objects.all()
+        'questions': Question.objects.all(),
+        'answer_form': AnswerForm()
     }
     return render_to_response('question/list.html', data,
         context_instance=RequestContext(request))
