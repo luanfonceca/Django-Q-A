@@ -3,6 +3,7 @@
 
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
+from django.contrib import messages
 
 from url_decorator import url
 from core.models import *
@@ -24,9 +25,9 @@ def list(request):
      name="question_add")
 def add(request):
     question_form = QuestionForm(request.POST or None)
-
     if question_form.is_valid():
         question_form.save()
+        messages.success(request, "successfully questioned.")
         return redirect('questions')
 
     data = {
@@ -40,14 +41,14 @@ def add(request):
      name="question_edit")
 def edit(request, slug):
     question = Question.objects.get(slug=slug)
-    question_form = QuestionForm(data=request.POST or None,
+    question_form = QuestionForm(
+        data=request.POST or None,
         instance=question
     )
-
     if question_form.is_valid():
         question_form.save()
+        messages.success(request, "successfully changed.")
         return redirect('questions')
-
     data = {
         'question': question,
         'question_form': question_form
@@ -63,8 +64,8 @@ def delete(request, slug):
 
     if request.method == 'POST':
         question.delete()
+        messages.success(request, "successfully deleted.")
         return redirect('questions')
-
     data = {
         'question': question,
         'question_form': question_form
@@ -78,7 +79,6 @@ def delete(request, slug):
 def view(request, slug):
     question = Question.objects.get(slug=slug)
     question.increment_view()
-
     data = {
         'question': question,
         'answer_form': AnswerForm()
