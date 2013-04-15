@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap_toolkit %}
+{% load tags %}
 
 {% block content %}
     <span class="span4 offset8">
@@ -17,9 +18,8 @@
                 </a>
             </h1>
             <div>
-                <span class="badge">
-                    Posted at: {{ question.create_at }}
-                </span>
+                {% date_badge question.create_at %}
+
                 <span class="badge badge-success">
                     {{ question.answers.count }} Answers
                 </span>

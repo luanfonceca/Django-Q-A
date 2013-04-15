@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap_toolkit %}
+{% load tags %}
 
 {% block content %}
     <div class="span12">
@@ -46,9 +47,8 @@
                             - {{ answer.desaproves }}
                         </a>
                     </span>
-                    <span class="badge">
-                        Posted at: {{ answer.create_at }}
-                    </span>
+
+                    {% date_badge answer.create_at %}
                 </div>
                 <hr>
             {% endfor %}
