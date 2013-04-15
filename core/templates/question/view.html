@@ -22,7 +22,7 @@
             </span>
         </div>
 
-        <h3>Respostas</h3>
+        <h3>Answers</h3>
         <div class="span10 offset1">
             {% for answer in question.answers.all %}
                 <div>
@@ -55,7 +55,7 @@
             <a href="#id_answer_form_{{ question.slug }}"
                role="button" data-toggle="modal"
                class="btn btn-large btn-success btn-block" >
-                Responder
+                Answer
             </a>
         </div>
     </div>
@@ -69,7 +69,7 @@
         <button type="button" class="close" data-dismiss="modal"
                 aria-hidden="true">×</button>
         <h3 id="myModalLabel">
-            Resposta: {{ question.title }}
+            Answer: {{ question.title }}
         </h3>
     </div>
     <form action="{{ question.get_answer_add_url }}"

@@ -8,17 +8,20 @@ from url_decorator import url
 from core.models import *
 from core.forms import *
 
-@url(r'^question/(?P<slug>[\w-]+)/answer/add/?$', name="answer_add")
+@url(regex=r'^question/(?P<slug>[\w-]+)\
+             /answer/add/?$',
+     name="answer_add")
 def add(request, slug):
     question = Question.objects.get(slug=slug)
     answer_form = AnswerForm(request.POST or None)
     if answer_form.is_valid():
         answer_form.save(question)
-    return redirect('question', question.slug)
+    return redirect('question', slug)
 
 
-@url(r'^question/(?P<slug>[\w-]+)/answer/edit/(?P<answer_pk>\d+)/?$',
-    name="answer_edit")
+@url(regex=r'^question/(?P<slug>[\w-]+)\
+             /answer/edit/(?P<answer_pk>\d+)/?$',
+     name="answer_edit")
 def edit(request, slug, answer_pk):
     question = Question.objects.get(slug=slug)
     answer = Answer.objects.get(pk=answer_pk)
@@ -28,42 +31,42 @@ def edit(request, slug, answer_pk):
     )
     if answer_form.is_valid():
         answer_form.save(question)
-    return redirect('question', question.slug)
+    return redirect('question', slug)
 
 
-@url(r'^question/(?P<slug>[\w-]+)/answer/delete/(?P<answer_pk>\d+)/?$',
-    name="answer_delete")
+@url(regex=r'^question/(?P<slug>[\w-]+)\
+             /answer/delete/(?P<answer_pk>\d+)/?$',
+     name="answer_delete")
 def delete(request, slug, answer_pk):
-    question = Question.objects.get(slug=slug)
     answer = Answer.objects.get(pk=answer_pk)
     if request.method == 'POST':
         answer.delete()
-    return redirect('question', question.slug)
+    return redirect('question', slug)
 
 
-@url(r'^question/(?P<slug>[\w-]+)/answer/set/correct/(?P<answer_pk>\d+)/?$',
-    name="answer_set_as_correct")
+@url(regex=r'^question/(?P<slug>[\w-]+)\
+             /answer/set/correct/(?P<answer_pk>\d+)/?$',
+     name="answer_set_as_correct")
 def set_as_correct(request, slug, answer_pk):
-    question = Question.objects.get(slug=slug)
     answer = Answer.objects.get(pk=answer_pk)
     if request.method == 'POST':
         answer.set_as_correct()
-    return redirect('question', question.slug)
+    return redirect('question', slug)
 
 
-@url(r'^question/(?P<slug>[\w-]+)/answer/aprove/(?P<answer_pk>\d+)/?$',
-    name="answer_aprove")
+@url(regex=r'^question/(?P<slug>[\w-]+)\
+             /answer/aprove/(?P<answer_pk>\d+)/?$',
+     name="answer_aprove")
 def aprove(request, slug, answer_pk):
-    question = Question.objects.get(slug=slug)
     answer = Answer.objects.get(pk=answer_pk)
     answer.increment_aproves()
-    return redirect('question', question.slug)
+    return redirect('question', slug)
 
 
-@url(r'^question/(?P<slug>[\w-]+)/answer/desaprove/(?P<answer_pk>\d+)/?$',
-    name="answer_desaprove")
+@url(regex=r'^question/(?P<slug>[\w-]+)\
+             /answer/desaprove/(?P<answer_pk>\d+)/?$',
+     name="answer_desaprove")
 def desaprove(request, slug, answer_pk):
-    question = Question.objects.get(slug=slug)
     answer = Answer.objects.get(pk=answer_pk)
     answer.increment_desaproves()
-    return redirect('question', question.slug)
+    return redirect('question', slug)

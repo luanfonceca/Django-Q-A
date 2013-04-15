@@ -7,7 +7,7 @@ from django.core.urlresolvers import RegexURLResolver
 from django.conf.urls.defaults import patterns
 from django.conf.urls.defaults import url as dcud_url
 
-def url(pattern, *args, **kwargs):
+def url(regex, *args, **kwargs):
     """
     Usage:
     @url(r'^users$')
@@ -28,7 +28,7 @@ def url(pattern, *args, **kwargs):
         if module:
             if 'urlpatterns' not in module.__dict__:
                 module.urlpatterns = []
-            module.urlpatterns += patterns('', dcud_url(pattern, f, *args, **kwargs))
+            module.urlpatterns += patterns('', dcud_url(regex, f, *args, **kwargs))
         return f
     return _wrapper
 

@@ -9,7 +9,8 @@ from core.models import *
 from core.forms import *
 
 
-@url(r'^/?$', name="questions")
+@url(regex=r'^/?$',
+     name="questions")
 def list(request):
     data = {
         'questions': Question.objects.all(),
@@ -19,7 +20,8 @@ def list(request):
         context_instance=RequestContext(request))
 
 
-@url(r'^question/add/?$', name="question_add")
+@url(regex=r'^question/add/?$',
+     name="question_add")
 def add(request):
     question_form = QuestionForm(request.POST or None)
 
@@ -34,7 +36,8 @@ def add(request):
         context_instance=RequestContext(request))
 
 
-@url(r'^question/edit/(?P<slug>[\w-]+)/?$', name="question_edit")
+@url(regex=r'^question/edit/(?P<slug>[\w-]+)/?$',
+     name="question_edit")
 def edit(request, slug):
     question = Question.objects.get(slug=slug)
     question_form = QuestionForm(data=request.POST or None,
@@ -53,7 +56,8 @@ def edit(request, slug):
         context_instance=RequestContext(request))
 
 
-@url(r'^question/delete/(?P<slug>[\w-]+)/?$', name="question_delete")
+@url(regex=r'^question/delete/(?P<slug>[\w-]+)/?$',
+     name="question_delete")
 def delete(request, slug):
     question = Question.objects.get(slug=slug)
 
@@ -68,7 +72,9 @@ def delete(request, slug):
     return render_to_response('question/delete.html', data,
         context_instance=RequestContext(request))
 
-@url(r'^question/(?P<slug>[\w-]+)/?$', name="question")
+
+@url(regex=r'^question/(?P<slug>[\w-]+)/?$',
+     name="question")
 def view(request, slug):
     question = Question.objects.get(slug=slug)
     question.increment_view()
